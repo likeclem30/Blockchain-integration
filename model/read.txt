@@ -1,0 +1,46 @@
+public function getblockadd($uname)
+  {
+    $db = $this->dblocal;
+    try
+    {
+      $stmt = $db->prepare("select a.* from m_user a where username = :uname ");
+      $stmt->bindParam("uname",$uname);
+      $stmt->execute();
+      $stat[0] = true;
+      $stat[1] = $stmt->fetch(PDO::FETCH_ASSOC);
+      return $stat;
+    }
+    catch(PDOException $ex)
+    {
+      $stat[0] = false;
+      $stat[1] = $ex->getMessage();
+      $stat[2] = 0;
+      return $stat;
+    }
+  }
+
+
+
+  public function getSaleId($id){
+  $db = $this->dblocal;
+  try
+  {
+    $stmt = $db->prepare("SELECT a.* ,c.`username`
+      FROM t_sale a 
+      INNER JOIN m_user c ON a.`id_user` = c.`id_user` where a.sale_id = :id");
+    $stmt->bindParam("id",$id);
+    $stmt->execute();
+    $stat[0] = true;
+    $stat[1] = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $stat;
+  }
+  catch(PDOException $ex)
+  {
+    $stat[0] = false;
+    $stat[1] = $ex->getMessage();
+    return $stat;
+  }
+}
+
+#01C0EF
+#01C0EF

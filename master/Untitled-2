@@ -1,0 +1,93 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `savePre`(
+    IN `var_namepre` VARCHAR(900), 
+     IN `var_tran_type` VARCHAR(900), 
+    IN `var_msisdnpre` VARCHAR(4000), 
+    IN `var_addresspre` VARCHAR(4000), 
+    IN `var_order_address` VARCHAR(4000), 
+    IN `var_offmsisdnpre` VARCHAR(4000), 
+    IN `var_offaddresspre` VARCHAR(4000), 
+    IN `var_farmsisdnpre` VARCHAR(4000), 
+    IN `var_faraddresspre` VARCHAR(4000), 
+    IN `var_passpre` VARCHAR(4000), 
+    IN `var_terms` VARCHAR(4000), 
+    IN `var_quantity` VARCHAR(4000), 
+    IN `var_amount` VARCHAR(4000), 
+    IN `var_order_rpt_address` VARCHAR(4000), 
+    IN `var_outpre` VARCHAR(4000), 
+    IN `var_outpred` VARCHAR(4000))
+    NO SQL
+BEGIN
+	DECLARE newnumber,newidpre VARCHAR(6);
+	DECLARE countpre INT;
+		SELECT COUNT(id_pre) FROM m_p_receipt INTO countpre;
+		IF(countpre = 0 ) THEN
+			SET newnumber = '1';
+		ELSE
+			SELECT TRIM(CAST((CAST(SUBSTR(id_pre,3,6) AS UNSIGNED)+1) AS CHAR(4)))    
+			FROM m_p_receipt
+			ORDER BY id_pre DESC LIMIT 1 INTO newnumber;
+		END IF; 
+		IF (LENGTH(newnumber) = 1) THEN
+			SET newidpre=CONCAT('RE000',newnumber);
+		ELSE
+			IF (LENGTH(newnumber) = 2) THEN
+				SET newidpre=CONCAT('RE00',newnumber);
+			ELSE
+				IF (LENGTH(newnumber) = 3) THEN
+					SET newidpre=CONCAT('RE0',newnumber);
+				ELSE
+					SET newidpre=CONCAT('RE',newnumber);
+				END IF ;
+			END IF ;
+		END IF ;
+		 INSERT INTO m_p_receipt(id_pre,
+                                 pre_name,
+                                 tran_type,
+                                 msisdnpre,
+                                 addresspre,
+                                 order_address,
+                                 offmsisdnpre,
+                                 offaddresspre,
+                                 farmsisdnpre,
+                                 faraddresspre,
+                                 passpre,
+                                 terms,
+                                 quantity,
+                                 amount,
+                                 order_rpt_address,
+                                 outpre,outpred,
+                                 date_created)
+		 	VALUES(newidpre,
+                   var_namepre, 
+                   var_tran_type,
+    var_msisdnpre, 
+    var_addresspre, 
+    var_order_address,
+    var_offmsisdnpre, 
+    var_offaddresspre, 
+    var_farmsisdnpre, 
+    var_faraddresspre, 
+    var_passpre,
+    var_terms,
+    var_quantity,
+    var_amount/1000000000000000000,
+    var_order_rpt_address,
+    var_outpre,
+    var_outpred,
+    now());
+		 select newidpre as id_pre;
+    END$$
+DELIMITER ;
+
+
+
+select distinct oaddresscre as b_addressred from m_p_receipt_cer 
+where msisdncre= '$xphonered_id' 
+and tran_type = 'certify' 
+and outcre like '%receiptpay-204-Error%'
+
+select 	oreceipt as b_addressredx from m_p_receipt_cer 
+where oaddresscre = '$xphonered_idx' 
+and tran_type ='confirmdelivery' 
+and outcre like '%preceipt-100-Success,receiptpay-100-Success%'

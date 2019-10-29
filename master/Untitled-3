@@ -1,0 +1,61 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `saveCre`(
+    IN `var_namecre` VARCHAR(200), 
+     IN `var_tran_type` VARCHAR(200), 
+    IN `var_msisdncre` VARCHAR(4000), 
+    IN `var_oaddresscre` VARCHAR(4000), 
+    IN `var_oreceipt` VARCHAR(4000), 
+    IN `var_cermsisdncre` VARCHAR(4000), 
+    IN `var_ceraddresscre` VARCHAR(4000), 
+    IN `var_passcre` VARCHAR(4000), 
+    IN `var_outcre` VARCHAR(4000))
+    NO SQL
+BEGIN
+	DECLARE newnumber,newidcre VARCHAR(6);
+	DECLARE countcre INT;
+		SELECT COUNT(id_cre) FROM m_p_receipt_cer INTO countcre;
+		IF(countcre = 0 ) THEN
+			SET newnumber = '1';
+		ELSE
+			SELECT TRIM(CAST((CAST(SUBSTR(id_cre,3,6) AS UNSIGNED)+1) AS CHAR(4)))    
+			FROM m_p_receipt_cer
+			ORDER BY id_cre DESC LIMIT 1 INTO newnumber;
+		END IF; 
+		IF (LENGTH(newnumber) = 1) THEN
+			SET newidcre=CONCAT('RE000',newnumber);
+		ELSE
+			IF (LENGTH(newnumber) = 2) THEN
+				SET newidcre=CONCAT('RE00',newnumber);
+			ELSE
+				IF (LENGTH(newnumber) = 3) THEN
+					SET newidcre=CONCAT('RE0',newnumber);
+				ELSE
+					SET newidcre=CONCAT('RE',newnumber);
+				END IF ;
+			END IF ;
+		END IF ;
+		 INSERT INTO m_p_receipt_cer(id_cre,
+                                 cre_name,
+                                 tran_type,
+                                 msisdncre,
+                                 oaddresscre,
+                                 oreceipt,
+                                 cermsisdncre,
+                                 ceraddresscre,
+                                 passcre,
+                                 outcre,
+                                 date_created)
+		 	VALUES(newidcre,
+                   var_namecre, 
+                   var_tran_type,
+    var_msisdncre, 
+    var_oaddresscre, 
+    var_oreceipt,
+    var_cermsisdncre, 
+    var_ceraddresscre, 
+    var_passcre,
+    var_outcre,
+    now());
+		 select newidcre as id_cre;
+    END$$
+DELIMITER ;

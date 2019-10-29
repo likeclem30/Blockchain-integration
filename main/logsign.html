@@ -1,0 +1,94 @@
+<?php include "../../library/config.php" ?>
+<?php $titlepage="Login Form System"; ?>
+<?php include "../layout/top-header.php"; //header template ?> 
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+<h1 class="text-primary">How to Create Popup Signup and Login Form using Bootstrap Modal</h1>
+<button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal"><b>Signup/ Login</b></button>
+<!--SignUp Form-->
+ <div class="modal fade" id="modal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h3 class="text-primary">Signup - Login Form</h3>
+        </div>
+		<div class="modal-body">
+			<ul class="nav nav-tabs">
+			  <li class="active"><a data-toggle="tab" href="#home">Signup</a></li>
+			  <li><a data-toggle="tab" href="#login">Login</a></li>
+			</ul>
+			<div class="tab-content">
+			  <div id="home" class="tab-pane fade in active">
+				<form  method="post" action="" role="form" class="form-horizontal">		
+				<div class="form-group">
+				<label class="control-label col-md-3">Your Name *:</label>
+				<div class="col-md-9">
+				<input type="text" class="form-control" name="name" value="" placeholder="Please Enter Your Name" required>
+				</div>
+				</div>
+				<div class="form-group">
+				<label class="control-label col-md-3">Email address *:</label>
+				<div class="col-md-9">
+				<input type="email" class="form-control" name="email" value="" placeholder="Please Enter Your Email" required>
+				</div>
+				</div>	
+				<div class="form-group">
+				<label class="control-label col-md-3">Password *:</label>
+				<div class="col-md-9">
+				<input type="password" class="form-control" name="password" value="" placeholder="Please Enter Your password" required>
+				</div>
+				</div>	
+				<div class="form-group">
+				<label class="control-label col-md-3">Retype Password *:</label>
+				<div class="col-md-9">
+				<input type="password" class="form-control" name="repassword" value="" placeholder="Please Enter Retype Your password" required>
+				</div>
+				</div>	
+				<div class="form-group">
+				<div class="col-md-3"></div>
+				<div class="col-md-9">
+				<input type="submit" name="Signup Now" value="Signup Now" class="btn btn-info"> <input type="reset" name="Reset" value="Reset" class="btn btn-default"> 
+				</div>	
+				</div>	
+				</form>			  
+			  </div>
+			  <div id="login" class="tab-pane fade">
+				<form  method="post" action="authorization.php" role="form" class="form-horizontal">		
+				<div class="form-group">
+				<label class="control-label col-md-3">Email address *:</label>
+				<div class="col-md-9">
+				<input type="email" class="form-control" name="email" value="" placeholder="Please Enter Your Email" required>
+				</div>
+				</div>	
+				<div class="form-group">
+				<label class="control-label col-md-3">Password *:</label>
+				<div class="col-md-9">
+				<input type="password" class="form-control" name="password" value="" placeholder="Please Enter Your password" required>
+				</div>
+				</div>	
+				<div class="form-group">
+				<div class="col-md-3"></div>
+				<div class="col-md-9">
+				<input type="submit" name="Login Now" value="Login Now" class="btn btn-info"> <input type="reset" name="Reset" value="Reset" class="btn btn-default"> 
+				</div>	
+				</div>	
+				</form>			  
+			  </div>
+			</div>
+		</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+</div>
+</body>
+</html> 

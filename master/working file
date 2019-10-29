@@ -1,0 +1,322 @@
+ 
+ 
+
+
+
+//******************************************************************************
+ //   Block Chain Guarrantee Functions Open
+ //   *******************************************************************************/
+
+
+
+
+<section class="content">
+	<div class="box box-success">
+		<div class="box-header with-border">
+			<h3 class="box-title">Guarranteed Order Functions</h3>
+		</div>
+		<!--./ box header-->
+		<div class="box-body">
+			<div class="row">
+				<div class="col-md-6">
+					<button type="submit" class="btn btn-primary " id="btnaddgof" name=""><i class="fa fa-plus"></i> Add Guaranteed Functions</button>
+					<br>
+				</div>
+			</div>
+			<div class="box-body table-responsive no-padding" style="max-width:1124px;">
+				<table id="table_gof" class="table  table-bordered table-hover ">
+					<thead>
+					<tr class="tableheader">
+							<th style="width:40px">#</th>
+							<th style="width:60px">Id</th>
+							<th style="width:60px">Transaction Type</th>
+							<th style="width:100px">Farmer</th>
+							<th style="width:100px">location</th>
+							
+							<th style="width:60px">MSISDN</th>
+							<th style="width:100px">Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>		
+		</div>
+	</div><!-- /.box -->
+
+</section><!-- /.content -->
+
+
+<div id="modalmastergof" class="modal fade ">
+	<div class="modal-dialog modal-md">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">×</button>
+				<h4 class="modal-title">Add Guaranteed Functions Form</h4>
+			</div>
+			<!--modal header-->
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="box-body">
+						<div class="form-group"> <label class="col-sm-3  control-label">Id</label>
+							<div class="col-sm-7"><input type="text" class="form-control " id="txtidgof" name="txtidgof" value="*New" placeholder="" disabled=""><input type="hidden" id="inputcrud" name="inputcrud" class="" value="N"> </div>
+						</div>
+						<div class="form-group"> <label class="col-sm-3  control-label">Transaction Title</label>
+							<div class="col-sm-7"><input type="text" class="form-control " id="txtgofname" name="txtgofname" value="" placeholder="Please fill out Tran. Title"> </div>
+						</div>
+
+                     
+
+						<div class="form-group"> <label class="col-sm-3  control-label">Transsaction Type</label>
+							<div class="col-sm-7"><select name="txttctygof" class="form-control" id="txttctygof" >
+					<option value=''>--- Select --</option>
+					<?php 
+					$sql = "select id_tran as id_trangof,transaction as trangof from `m_transaction` where id_tran in ('expireandrefund','removeofftaker','addofftaker','addfunds')";
+					$res = mysqli_query($con, $sql);
+					if(mysqli_num_rows($res) > 0) {
+						while($row = mysqli_fetch_object($res)) {
+							echo "<option value='".$row->id_trangof."'>".$row->trangof."</option>";
+						}
+					}
+					?>
+				    </select></div>
+					</div>
+						<!--modal header
+						<div class="form-group"> <label class="col-sm-3  control-label">Location</label>	
+							<div class="col-sm-7"><select name="txtlocnamegof" class="form-control" id="txtlocnamegof">
+					<option value=''>--- Select --</option>
+					
+					<?php 
+					$sqlgof = "select loc_name as gof_loc from `m_location`";
+					$res = mysqli_query($con, $sqlgof);
+					if(mysqli_num_rows($res) > 0) {
+						while($row = mysqli_fetch_object($res)) {
+							echo "<option value='".$row->gof_loc."'>".$row->gof_loc."</option>";
+						}
+					}
+					?>
+					
+					</select>
+				   </div>
+					</div>	
+					-->	
+					<div class="form-group"> <label class="col-sm-3  control-label" >Wallet No:</label>
+							<div class="col-sm-7">
+							
+							<select name="txtmsisdngof" class="form-control" id="txtmsisdngof" >
+					<option value=''>---- Select ---</option>
+					<?php 
+
+                    
+						$sqlgof= "SELECT 
+						concat(username,'-',wphone) as wphonegof, wphone as wphonegof_id FROM m_user t1	INNER JOIN	m_request t2 ON t1.wphone = t2.msisdnreq
+						group by msisdnreq";
+						//$sql = "select * from `m_user` where wphone=".$walletno;
+						$resgof= mysqli_query($con, $sqlgof);
+						if(mysqli_num_rows($resgof) > 0) {
+							while($row = mysqli_fetch_object($resgof)) {
+								echo "<option value='".$row->wphonegof_id."'>".$row->wphonegof."</option>";
+							}
+						}
+						?>
+				    </select>
+					</div>
+					</div>	
+						<div class="form-group"> <label class="col-sm-3  control-label">Account Address</label>
+						<div class="col-sm-7">
+							<select name="txtaddressgof" class="form-control" id="txtaddressgof" disabled="disabled"><option>------- Select --------</option></select>
+						</div>
+						</div>
+
+						<div class="form-group"> <label class="col-sm-3  control-label">Order Address</label>
+						<div class="col-sm-7">
+							<select name="txtordergof" class="form-control" id="txtordergof" disabled="disabled"><option>------- Select --------</option></select>
+						</div>
+						</div>
+
+						
+
+                       <!-- <div id="amountgof" style="display: none"> -->
+                       <div class="form-group"> <label class="col-sm-3  control-label">Amount</label>
+							<div class="col-sm-7">
+								<div class="input-group">
+									<span class="input-group-addon">N/$.</span>
+									<input type="text" class="form-control money" id="txtamountgof" name="txtamountgof" value="" placeholder=""></div>
+								</div>
+							</div>
+							</div>
+                            
+
+						<div class="form-group"> <label class="col-sm-3  control-label">Password</label>
+							<div class="col-sm-7"><input type="password" class="form-control " id="txtopassgof" name="txtopassgof" value="" placeholder="Please fill out Tran. Title"> </div>
+						</div>
+
+						
+
+                       <!-- <div id="offtaker" style="display: none"> -->
+                        <div class="form-group"> <label class="col-sm-3  control-label" >Offtaker Wallet No:</label>
+							<div class="col-sm-7">
+							
+							<select name="offtxtmsisdngof" class="form-control" id="offtxtmsisdngof" >
+					<option value=''>---- Select ---</option>
+					<?php 
+
+                    
+						$sqlgof_off= "SELECT 
+						concat(username,'-',wphone) as wphonegof_off, wphone as wphonegof_id_off FROM m_user t1	INNER JOIN	m_request t2 ON t1.wphone = t2.msisdnreq
+						group by msisdnreq";
+						//$sql = "select * from `m_user` where wphone=".$walletno;
+						$resgof_off= mysqli_query($con, $sqlgof_off);
+						if(mysqli_num_rows($resgof_off) > 0) {
+							while($row = mysqli_fetch_object($resgof_off)) {
+								echo "<option value='".$row->wphonegof_id_off."'>".$row->wphonegof_off."</option>";
+							}
+						}
+						?>
+				    </select>
+					</div>
+					</div>	
+						<div class="form-group"> <label class="col-sm-3  control-label">Offtaker-Account Address</label>
+						<div class="col-sm-7">
+							<select name="offtxtaddressgof" class="form-control" id="offtxtaddressgof" disabled="disabled"><option>------- Select --------</option></select>
+						</div>
+						</div>
+						
+                     <!-- </div> -->
+ 
+						
+							<div class="form-group"> <label class="col-sm-1  control-label"></label>
+								<div class="col-sm-11"><button type="submit" title="Save Button" class="btn btn-primary " id="btnsavegof" name=""><i class="fa fa-save"></i> Submit</button> <span id="infoprosesgof"></span> </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				</div>
+				<!--modal footer-->
+			</div>
+			<!--modal-content-->
+		</div>
+		<!--modal-dialog modal-lg-->
+       </div>
+<!--gofmer-->
+
+<!--
+//******************************************************************************
+ //   Block Chain Guaranteed order Function Close
+ //   *******************************************************************************/
+
+
+-->
+ 
+ if(($transaction_type =='approve' || $transaction_type =='expireandrefund' || $transaction_type =='suspend' || $transaction_type =='unsuspend' || $transaction_type =='expire' || $transaction_type =='revoke')&&($passgot == $u_pass1 )){ 
+    
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+          CURLOPT_URL => 'https://www.agrikore.net/gorder/unsafe/tx/{"'."op".'":"'.$transaction_type.'",'.'"buyer'.'":"'.$addressgot.'",'.'"buyerpwd'.'":"'.$passgot.'",'.'"order'.'":"'.$order_address.'"}',
+          CURLOPT_RETURNTRANSFER => true,
+          CURLOPT_ENCODING => "",
+          CURLOPT_MAXREDIRS => 10,
+          CURLOPT_TIMEOUT => 30,
+          CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+          CURLOPT_CUSTOMREQUEST => "POST",
+          CURLOPT_HTTPHEADER => array(
+            "Cache-Control: no-cache",
+            "x-access-token: $b_token"
+          ),
+        ));
+        
+        $responsesus = curl_exec($curl);
+        $err = curl_error($curl);
+        
+        curl_close($curl);
+    
+    if ($err) {
+      //$receipt2 = "Connection Error:" . $err;
+      $receiptsus = "Connection Error";
+    } else {
+    
+      $newresponsesus = str_replace('"',"",$responsesus);
+        $receiptsus = str_replace('{}',"",$newresponsesus);
+    
+        //echo "<br> tran_id2 -".$tran_id2;
+        //echo "<br> response2 1-".$receipt2;
+        //echo "<br> response2 1-".$receiptx;
+        
+    }
+    
+    // sleep for 10 seconds
+    sleep(10);
+    
+    if($receiptsus != '' || $receiptsus != Null || $receiptsus != 'Connection Error'){ 
+    
+        $ctr = 1;
+    
+        while($ctr++ < 305){//while loop
+    
+     $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://www.agrikore.net/transactionreceipts/'.$receiptsus,
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 200,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "Cache-Control: no-cache",
+            "x-access-token: $b_token"
+        ),
+        ));
+        
+        $responsesus = curl_exec($curl);
+        $err = curl_error($curl);
+        
+        curl_close($curl);
+    
+        if ($err) {
+        //echo "cURL Error #:" . $err;
+        $errorsus = "Empty reply from server";
+        } else {
+         $echo = $responsesus;
+        }
+    
+        //echo "<br> response3 :".$response3;
+        //$ctr++;
+        if ($responsesus != "Cannot find the transaction or it's receipt" || $responsesus != "" || $errorsus != "Empty reply from server" || substr($responsesus,0,33) != "Cannot find the transaction or it") {
+        break;    /* You could also write 'break 1;' here. */
+    }
+        
+    }//while loop off
+    //	echo "<br> response3-out :".$response3;
+     // echo "<br> Reciept query :".$response3."<br>";
+        $json_o = json_decode($responsesus,true);
+    
+                $result = array();
+                $out = "Status :";
+    
+                foreach ($json_o['events'] as $theentity) {
+                    $result[] = $theentity['args']['errorCode'];
+                    $a = $theentity['args']['errorCode'];
+                    $c = $theentity['contract'];
+    
+                if ($a != 100){
+                    //echo "Successful";
+                    $out .=$c."-".$a."-Error,";
+                }else{
+                    $out .=$c."-".$a."-Success,"; 
+                }
+    
+                }
+                $array = $pos->saveGot($namegot,$transaction_type,$msisdngot,$addressgot,$amount,$passgot,$order_address,$offmsisdngot,$offaddressgot,$out);
+                
+            }else{
+    
+        //echo "<br> Everything failed<br>";
+        $array = false;
+    }
+    
+    }
+

@@ -1,0 +1,120 @@
+//-------buy mula------------------
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://www.agrikore.net/'.$currency_type.'/unsafe/tx/{"'."op".'":"'.$currency_type.'",'.'"from'.'":"'.$addresscur.'",'.'"frompwd'.'":"'.$spassword.'",'.'"val'.'":"'.$amount.'"}',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_HTTPHEADER => array(
+    "Cache-Control: no-cache",
+    "Postman-Token: b1b08b9b-9b03-49e2-8742-990a97f9d6cd"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+
+
+SELECT AES_DECRYPT(pass_user,'blockchain') tt FROM `m_user` WHERE username = 'aaron@cellulant.com.ng' 
+
+SELECT encrypt(Md5(username)) tt FROM `m_user` where username = 'nancy@cellulant.com.ng'
+
+
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_URL => 'https://www.agrikore.net/'.$currency_type.'/unsafe/ad/{"'."op".'":"'.'setbuyprice",'.'"admin'.'":"'.'0x2d2d8721fcacb58c7f5f2946bdcc487629da2d64",'.'"adminpwd'.'":"'.'agrikore",'.'"price'.'":"'.$amount.'"}',
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_HTTPHEADER => array(
+    "Cache-Control: no-cache",
+    "Postman-Token: 4f222c37-f775-4e7b-b481-ba936bd08f69",
+    "x-access-token: $b_token"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `saveMul`(
+    IN `var_mul_name` VARCHAR(200), 
+    IN `var_currency_type` VARCHAR(100), 
+    IN `var_exchanged_currency` VARCHAR(100), 
+    IN `var_amount` VARCHAR(1000), 
+    IN `var_addressmul` VARCHAR(4000), 
+    IN `var_msisdn` VARCHAR(100), 
+    IN `var_tran_id` VARCHAR(4000))
+    NO SQL
+BEGIN
+	DECLARE newnumber,newidmul VARCHAR(6);
+	DECLARE countmul INT;
+		SELECT COUNT(id_mul) FROM m_buy_currency INTO countmul;
+		IF(countmul = 0 ) THEN
+			SET newnumber = '1';
+		ELSE
+			SELECT TRIM(CAST((CAST(SUBSTR(id_mul,3,6) AS UNSIGNED)+1) AS CHAR(4)))    
+			FROM m_buy_currency
+			ORDER BY id_mul DESC LIMIT 1 INTO newnumber;
+		END IF; 
+		IF (LENGTH(newnumber) = 1) THEN
+			SET newidmul=CONCAT('BY000',newnumber);
+		ELSE
+			IF (LENGTH(newnumber) = 2) THEN
+				SET newidmul=CONCAT('BY00',newnumber);
+			ELSE
+				IF (LENGTH(newnumber) = 3) THEN
+					SET newidmul=CONCAT('BY0',newnumber);
+				ELSE
+					SET newidmul=CONCAT('BY',newnumber);
+				END IF ;
+			END IF ;
+		END IF ;
+		 INSERT INTO m_buy_currency(id_mul,mul_name,currency_type,exchanged_currency,amount,addressmul,msisdnmul,transaction_id)
+		 	VALUES(newidmul,var_mul_name,var_currency_type,var_exchanged_currency,(var_amount/1000000000000000000),var_addressmul,var_msisdn,var_tran_id);
+		 select newidmul as id_mul;
+    END$$
+DELIMITER ;
